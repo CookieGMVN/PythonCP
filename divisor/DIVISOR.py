@@ -1,29 +1,29 @@
-fi=open("DIVISOR.INP")
-fo=open("DIVISOR.OUT", "w")
+def find_kth_divisor(n, k):
+    divisors = []
 
-data=list(map(int, fi.readline().split()))
-n=data[0]
-k=data[1]
-fi.close()
-current_step=0
-current_num=0
-i=1
-exs=[]
+    # Tìm tất cả các ước số của n
+    for i in range(1, int(n**0.5) + 1):
+        if n % i == 0:  # Nếu i là ước số
+            divisors.append(i)
+            if i != n // i:  # Tránh thêm ước số trùng lặp
+                divisors.append(n // i)
 
-while current_step < k and i<int(n**.5)+2:
-    if n%i==0:
-        current_step+=1
-        current_num=i
-        exs.append(int(n/i))
-    i+=1
+    # Sắp xếp các ước số theo thứ tự tăng dần
+    divisors.sort()
 
-exs.sort()
-
-if current_step < k:
-    if len(exs) >= k-current_step:
-        fo.write(f"{exs[int(k-current_step)]}")
+    # Kiểm tra và trả về ước số thứ k
+    if k <= len(divisors):
+        return divisors[k - 1]
     else:
-        fo.write("-1")
-else:
-    fo.write(f"{current_num}")
-fo.close()
+        return -1
+
+# Đọc dữ liệu từ file
+with open("DIVISOR.INP", "r") as fi:
+    n, k = map(int, fi.readline().split())
+
+# Tìm ước số thứ k
+result = find_kth_divisor(n, k)
+
+# Ghi kết quả ra file
+with open("DIVISOR.OUT", "w") as fo:
+    fo.write(str(result))
